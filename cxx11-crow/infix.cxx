@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "rpn.hxx"
+
 using namespace std;
 
 namespace infixcalc {
@@ -79,11 +81,16 @@ namespace infixcalc {
 
     return result;
   }
+
+  double evaluateInfix(list<string> tokens) {
+    return rpncalc::evaluateRpn(convertInfix(tokens));
+  }
 };
 
 int main() {
-  list<string> testexpr {"1", "*", "(", "2", "+", "3", ")"};
+  list<string> testexpr {"4", "*", "(", "2", "+", "3", ")"};
 
+  cout << infixcalc::evaluateInfix(testexpr) << endl;
   auto result = infixcalc::convertInfix(testexpr);
   for (auto token : result) {
     cout << token << ' ';

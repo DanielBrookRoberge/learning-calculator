@@ -48,9 +48,3 @@ namespace rpncalc {
     return pop(calcStack);
   }
 };
-
-int main(int argc, char **argv) {
-  list<string> testexpr {"1", "2", "+", "3", "*"};
-
-  cout << rpncalc::evaluateRpn(testexpr) << endl;
-}
