@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "rpn.hxx"
+#include "tokenize.hxx"
 
 using namespace std;
 
@@ -88,12 +89,12 @@ namespace infixcalc {
 };
 
 int main() {
-  list<string> testexpr {"4", "*", "(", "2", "+", "3", ")"};
+  string testexpr = "4 * (2 + 3)";
 
-  cout << infixcalc::evaluateInfix(testexpr) << endl;
-  auto result = infixcalc::convertInfix(testexpr);
-  for (auto token : result) {
-    cout << token << ' ';
-  }
-  cout << endl;
+  cout << infixcalc::evaluateInfix(infixcalc::tokenize(testexpr)) << endl;
+  // auto result = infixcalc::convertInfix(testexpr);
+  // for (auto token : result) {
+  //   cout << token << ' ';
+  // }
+  // cout << endl;
 }
