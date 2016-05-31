@@ -88,13 +88,13 @@ namespace infixcalc {
   }
 };
 
-int main() {
-  string testexpr = "4 * (2 + 3)";
+// int main() {
+//   string testexpr = "4 * (2 + 3)";
 
-  cout << infixcalc::evaluateInfix(infixcalc::tokenize(testexpr)) << endl;
-  // auto result = infixcalc::convertInfix(testexpr);
-  // for (auto token : result) {
-  //   cout << token << ' ';
-  // }
-  // cout << endl;
-}
+//   cout << infixcalc::evaluateInfix(infixcalc::tokenize(testexpr)) << endl;
+//   // auto result = infixcalc::convertInfix(testexpr);
+//   // for (auto token : result) {
+//   //   cout << token << ' ';
+//   // }
+//   // cout << endl;
+// }
