@@ -8,6 +8,7 @@ func main() {
 	fmt.Printf("Result is %f\n", rpn.Evaluate(testexpr))
 
 	testexpr2 := []string{"(", "1", "+", "2", ")", "*", "5"}
+
 	tokens := rpn.ConvertInfix(testexpr2)
 	fmt.Printf("Tokens are %v\n", tokens)
 	fmt.Printf("Result is %f\n", rpn.Evaluate(tokens))
@@ -18,4 +19,7 @@ func main() {
 	rpnTokens := rpn.ConvertInfix(infixTokens)
 	fmt.Printf("Tokens are %v\n", rpnTokens)
 	fmt.Printf("Result is %f\n", rpn.Evaluate(rpnTokens))
+
+	fmt.Printf("Result is %f\n", rpn.Evaluate2(rpn.ConvertInfix2(rpn.Tokenize2(testexpr3))))
+	fmt.Printf("Result is %f\n", rpn.Calculate(testexpr3))
 }
