@@ -36,14 +36,12 @@ let convertInfix = function(tokens) {
             let tokenPrecedence = precedence[token];
             while (true) {
                 let stackPrecedence = precedence[stack[stack.length-1]] || 0;
-                if (tokenPrecedence > stackPrecedence) {
-                    stack.push(token);
-                    break;
-                } else if (tokenPrecedence < stackPrecedence) {
+                if (tokenPrecedence <= stackPrecedence) {
                     output.push(stack.pop());
-                } else {
-                    output.push(stack.pop());
-                    stack.push(token);
+                }
+
+                if (tokenPrecedence >= stackPrecedence) {
+                    stack.push(token)
                     break;
                 }
             }
