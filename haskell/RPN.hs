@@ -7,12 +7,15 @@ import Data.Char (isDigit)
 isNumber :: String -> Bool
 isNumber = all isDigit
 
-performOperation :: (Float -> Float -> Float) -> [Float] -> [Float]
+type Stack = [Float]
+type Tokens = [String]
+
+performOperation :: (Float -> Float -> Float) -> Stack -> Stack
 performOperation _ [] = error "Stack underflow"
 performOperation _ (_:[]) = error "Stack underflow"
 performOperation op (x:y:stack) = (y `op` x):stack
 
-consumeRpnToken :: [String] -> [Float] -> [Float]
+consumeRpnToken :: Tokens -> Stack -> Stack
 consumeRpnToken [] stack = stack
 consumeRpnToken (token:tokens) stack
   | isNumber token = recurse $ (read token):stack
@@ -24,10 +27,10 @@ consumeRpnToken (token:tokens) stack
   where recurse = consumeRpnToken tokens
         operate op = recurse $ performOperation op stack
 
-extractResult :: [Float] -> Float
+extractResult :: Stack -> Float
 extractResult [] = error "Stack underflow"
 extractResult (x:[]) = x
 extractResult _ = error "Multiple values left on stack"
 
-evaluateRpn :: [String] -> Float
+evaluateRpn :: Tokens -> Float
 evaluateRpn tokens = extractResult $ consumeRpnToken tokens []
