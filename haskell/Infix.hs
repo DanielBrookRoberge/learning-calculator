@@ -22,31 +22,29 @@ resolveCloseBracket :: Stack -> Tokens -> State
 resolveCloseBracket [] _ = error "Stack underflow"
 resolveCloseBracket (op:stack) output
   | op == "(" = (stack, output)
-  | otherwise = resolveCloseBracket stack (output ++ [op])
+  | otherwise = resolveCloseBracket stack (op:output)
 
 resolvePrecedence :: String -> Stack -> Tokens -> State
 resolvePrecedence op [] output = ([op], output)
 resolvePrecedence op (top:stack) output
-  | opPrecedence < stackPrecedence = resolvePrecedence op stack (output ++ [top])
-  | opPrecedence == stackPrecedence = (op:stack, (output ++ [top]))
+  | opPrecedence < stackPrecedence = resolvePrecedence op stack (top:output)
+  | opPrecedence == stackPrecedence = (op:stack, top:output)
   | otherwise = (op:top:stack, output)
   where opPrecedence = precedence op
         stackPrecedence = precedence top
 
-convertTokens :: Tokens -> (Stack, Tokens) -> State
-convertTokens [] pair = pair
-convertTokens (token:tokens) (stack, output)
-  | isNumber token = recurse (stack, output ++ [token])
-  | token == "(" = recurse (token:stack, output)
-  | token == ")" = recurse $ resolveCloseBracket stack output
-  | otherwise = recurse $ resolvePrecedence token stack output
-  where recurse = convertTokens tokens
+convertTokens :: State -> String -> State
+convertTokens (stack, output) token
+  | isNumber token = (stack, token:output)
+  | token == "(" = (token:stack, output)
+  | token == ")" = resolveCloseBracket stack output
+  | otherwise = resolvePrecedence token stack output
 
 exhaustStack :: Stack -> Tokens -> Tokens
 exhaustStack [] output = output
-exhaustStack (top:stack) output = exhaustStack stack (output ++ [top])
+exhaustStack (top:stack) output = exhaustStack stack (top:output)
 
 translateToRpn :: Tokens -> Tokens
 translateToRpn tokens =
-    let (stack, output) = convertTokens tokens ([], [])
-    in exhaustStack stack output
+    let (stack, output) = foldl convertTokens ([], []) tokens
+    in reverse $ exhaustStack stack output
